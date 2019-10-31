@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="mydons_themeconsolecmd_command_listthemes" xsi:type="object">Mydons\ThemeConsoleCmd\Command\ListThemes</item>
+                <item name="mydons_themeconsolecmd_command_settheme" xsi:type="object">Mydons\ThemeConsoleCmd\Command\SetTheme</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
