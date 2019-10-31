@@ -17,22 +17,27 @@ use Magento\Theme\Model\Data\Design\Config as DesignConfig;
 
 class SetTheme extends Command
 {
-	 protected $themeFactory;
 	 
-	 protected $themeConfig;
+     protected $themeFactory;
 	 
-	 protected $themeRegistration;
+     protected $themeConfig;
+	 
+     protected $themeRegistration;
 	 	 
      private $cache;
      
      protected $indexerRegistry;
 
-     
-	 public function __construct(ThemeFactory $themeFactory, ThemeConfig $themeConfig, ThemeRegistration $themeRegistration, Cache $cache, IndexerRegistry $indexerRegistry)
-     {
+     public function __construct(
+	 ThemeFactory $themeFactory,
+	 ThemeConfig $themeConfig,
+	 ThemeRegistration $themeRegistration, 
+	 Cache $cache, 
+	 IndexerRegistry $indexerRegistry
+     ) {
          $this->themeFactory = $themeFactory;
-		 $this->themeConfig = $themeConfig;
-		 $this->themeRegistration = $themeRegistration;
+	 $this->themeConfig = $themeConfig;
+	 $this->themeRegistration = $themeRegistration;
          $this->cache = $cache;	
          $this->indexerRegistry = $indexerRegistry;	 
          return parent::__construct();
@@ -42,7 +47,7 @@ class SetTheme extends Command
     {
         $this->setName("mydons:settheme");
         $this->setDescription("A Custom Command to set the desired theme in Frontend via CLI ");
-		$this->addArgument(
+	$this->addArgument(
             'theme_code',
             InputArgument::IS_ARRAY | InputArgument::REQUIRED,
             'theme code. Theme Code Should be specified'
@@ -52,10 +57,9 @@ class SetTheme extends Command
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
-    {
-		
-		$themeCode = $input->getArgument('theme_code');
-		$theme = $this->themeFactory->create()->load($themeCode, 'code');
+    {		
+	$themeCode = $input->getArgument('theme_code');
+	$theme = $this->themeFactory->create()->load($themeCode, 'code');
         if ($theme->getId()) {
             $this->themeConfig->assignToStore(
                 $theme,
@@ -64,16 +68,14 @@ class SetTheme extends Command
             );
             $this->cache->clean();
             $this->indexerRegistry->get(DesignConfig::DESIGN_CONFIG_GRID_INDEXER_ID)->reindexAll();
-			$output->writeln("<info>Theme " .$theme->getThemeTitle()." is Enabled</info>");
+		
+	    $output->writeln("<info>Theme " .$theme->getThemeTitle()." is Enabled</info>");
             $output->writeln("<info>Cache Cleared Successfully</info>");
             $output->writeln("<info>Design Grid Reindexed Successfully</info>");
             $output->writeln("<info>Please run setup:static-content:deploy -f command for a newly installed theme</info>");
         }   
-		else {
-			$output->writeln("Unknown Theme or Package Provided");
-		}
-        
-		
-		
+	else {
+		$output->writeln("Unknown Theme or Package Provided");
+	}		
     }
 } 
